@@ -1,7 +1,7 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+
     private static boolean rome = true;
 
     public static void main(String[] args) throws Exception {
@@ -16,21 +16,20 @@ public class Main {
         if (res.length > 3) {
             throw new Exception("//т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
         }
-        if (res.length <3) {
-            throw new Exception ("строка не является математической операцией");
+        if (res.length < 3) {
+            throw new Exception("строка не является математической операцией");
         }
         int[] numbers = getNumbers(res[0], res[2]);
         if (numbers[0] > 10 | numbers[1] > 10) {
-            throw new Exception("Введенные числа должны быть от 1 до 10");
-
+            throw new Exception("введенные числа должны быть от 1 до 10");
         }
+
         if (rome) {
             return getRome(getResult(numbers, res[1]));
         } else {
             return String.valueOf(getResult(numbers, res[1]));
         }
     }
-
     static int[] getNumbers(String num1, String num2) throws Exception {
         try {
             int[] numbers = {Integer.parseInt(num1), Integer.parseInt(num2)};
@@ -40,12 +39,10 @@ public class Main {
             try {
                 return new int[]{Rome.valueOf(num1).getArabic(), Rome.valueOf(num2).getArabic()};
             } catch (Exception b) {
-                throw new Exception("//т.к. используются одновременно разные системы счисления");
+                throw new Exception("используются одновременно разные системы счисления");
             }
         }
     }
-
-
     static String getRome(int number) {
         return "I".repeat(number)
                 .replace("IIIII", "V")
@@ -61,28 +58,17 @@ public class Main {
                 .replace("DD", "M")
                 .replace("DCD", "CM");
     }
-
-
     static int getResult(int[] numbers, String sign) throws Exception {
-        int result = 0;
-        switch (sign) {
-            case "+":
-                result = numbers[0] + numbers[1];
-                break;
-            case "-":
-                result = numbers[0] - numbers[1];
-                break;
-            case "*":
-                result = numbers[0] * numbers[1];
-                break;
-            case "/":
-                result = numbers[0] / numbers[1];
-                break;
-            default:
-                throw new Exception("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-        }
+        int result = switch (sign) {
+            case "+" -> numbers[0] + numbers[1];
+            case "-" -> numbers[0] - numbers[1];
+            case "*" -> numbers[0] * numbers[1];
+            case "/" -> numbers[0] / numbers[1];
+            default ->
+                    throw new Exception("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+        };
         if (rome & result < 1) {
-            throw new Exception("//т.к. в римской системе нет отрицательных чисел");
+            throw new Exception("D римской системе нет отрицательных чисел");
         } else {
             return result;
         }
